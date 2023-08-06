@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar Postagem - Moon Fox Studio</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f6f6f6;
+    }
+    .header {
+      background-color: #1da1f2;
+      color: white;
+      text-align: center;
+      padding: 10px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: bold;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: vertical;
+    }
+    .form-group button {
+      background-color: #1da1f2;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .footer {
+      text-align: center;
+      padding: 10px;
+      background-color: #1da1f2;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Criar Postagem - Moon Fox Studio</h1>
+  </div>
+  <div class="container">
+    <form id="criarPostagemForm">
+      <div class="form-group">
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" name="titulo" required>
+      </div>
+      <div class="form-group">
+        <label for="descricao">Descrição:</label>
+        <textarea id="descricao" name="descricao" rows="4" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="imagem">URL da Imagem:</label>
+        <input type="text" id="imagem" name="imagem" required>
+      </div>
+      <button type="button" onclick="criarPostagem()">Enviar</button>
+    </form>
+  </div>
+  <div class="footer">
+    &copy; 2023 Moon Fox Studio
+  </div>
+  <script>
+    function criarPostagem() {
+      const titulo = document.getElementById('titulo').value;
+      const descricao = document.getElementById('descricao').value;
+      const imagem = document.getElementById('imagem').value;
+      const data = new Date().toLocaleString();
+      const novaPostagem = { titulo, descricao, imagem, data };
+
+      fetch('ps.json')
+        .then(response => response.json())
+        .then(data => {
+          data.postagens.push(novaPostagem);
+          return fetch('ps.json', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+        })
+        .then(() => {
+          alert('Postagem criada com sucesso!');
+          document.getElementById('criarPostagemForm').reset();
+        })
+        .catch(error => console.error('Erro ao criar postagem:', error));
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moon Fox Studio - Postagens da Equipe</title>
+  <style>
+    body {
+      font-family: "ConcertOne", cursive;
+      margin: 0;
+      padding: 0;
+      background-color: #f6f6f6;
+    }
+    .header {
+      background-color: #1da1f2;
+      color: white;
+      text-align: center;
+      padding: 10px;
+    }
+    .container {
+      max-width: 80%;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .post {
+      background-color: white;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .footer {
+      text-align: center;
+      padding: 10px;
+      background-color: #1da1f2;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <p>Bem-vindo ao site oficial da</p>
+    <h1>Moon Fox Studio</h1>
+  </div>
+  <div class="container">
+    <h2>Postagens da Equipe</h2>
+    <div id="postagens"></div>
+  </div>
+  <div class="footer">
+    &copy; 2023 Moon Fox Studio
+  </div>
+  <script>
+    fetch('ps.json')
+      .then(response => response.json())
+      .then(data => {
+        const postagensDiv = document.getElementById('postagens');
+        data.postagens.forEach(postagem => {
+          const postDiv = document.createElement('div');
+          postDiv.className = 'post';
+          postDiv.innerHTML = `
+            <h3>${postagem.titulo}</h3>
+            <p>${postagem.descricao}</p>
+            <p>${postagem.data}</p>
+            <img src="${postagem.imagem}" alt="Imagem da postagem">
+          `;
+          postagensDiv.appendChild(postDiv);
+        });
+      })
+      .catch(error => console.error('Erro ao carregar postagens:', error));
+  </script>
+</body>
+</html>
